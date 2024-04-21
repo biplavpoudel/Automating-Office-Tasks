@@ -2,6 +2,7 @@ from robocorp.tasks import task
 from robocorp import browser
 from RPA.HTTP import HTTP
 from RPA.Excel.Files import Files
+from RPA.PDF import PDF
 
 @task
 def robot_spare_bin_python():
@@ -64,4 +65,8 @@ def log_out():
 
 def export_as_pdf():
     """Creates a pdf file from sales table"""
-    
+    page = browser.page()
+    sales_result_html = page.locator('//*[@id="sales-results"]').inner_html()
+
+    pdf = PDF()
+    pdf.html_to_pdf(sales_result_html, "output/sales_results.pdf")
