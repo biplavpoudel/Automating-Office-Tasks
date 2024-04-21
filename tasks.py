@@ -7,12 +7,15 @@ from RPA.Excel.Files import Files
 def robot_spare_bin_python():
     """Insert the sales data for the week and export it as a PDF"""
     browser.configure(
-        slowmo=1000,
+        slowmo=10,
     )
     open_the_intranet_website()
     log_in()
     download_excel_file()
     fill_form_with_excel_data()
+    collect_results()
+    export_as_pdf()
+    log_out()
 
 def open_the_intranet_website():
     """Navigates to the given url"""
@@ -21,7 +24,7 @@ def open_the_intranet_website():
 def log_in():
     """Logs into Admin account by entering credentials"""
     page = browser.page()
-    page.fill("#username", "maria")
+    page.fill('//*[@id="username"]', "maria")
     page.fill("#password", "thoushallnotpass")
     page.click("button:text('Log in')")
 
@@ -49,3 +52,16 @@ def fill_form_with_excel_data():
     for row in worksheet:
         fill_and_submit_sales_form(row)
 
+def collect_results():
+    """Screenshot the page"""
+    page = browser.page()
+    page.screenshot(path="output/sales_summary.png")
+
+def log_out():
+    """Presses log out button"""
+    page = browser.page()
+    page.click("button:text('Log out')")
+
+def export_as_pdf():
+    """Creates a pdf file from sales table"""
+    
